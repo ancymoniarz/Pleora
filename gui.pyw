@@ -1,7 +1,7 @@
-import customtkinter, os
+import customtkinter, os, sys
 from pleoraConfig import *
 from customtkinter import filedialog 
-if "C:\\ancymon" in os.getcwd(): 
+if "C:\\ancymon" in os.path.abspath(sys.argv[0]): 
     print("Loading Pleora Config, please wait...")
 else:
     quit()
@@ -19,31 +19,28 @@ userfolder=os.path.expanduser( '~' )
 def elementToNumber(element):
     if element=="src":return 0
     elif element=="dst":return 1
-    elif element=="waitTime":return 2
-    elif element=="notify":return 3
-    elif element=="notSound":return 4
-    elif element=="notificationSound":return 5
-    elif element=="killSwitch":return 6
+    elif element=="notify":return 2
+    elif element=="notSound":return 3
+    elif element=="notificationSound":return 4
+    elif element=="killSwitch":return 5
+    elif element=="status":return 6
 def updateConfig(element,value):
-    with open("../pleoraConfig.py", "r") as fb:
+    with open("pleoraConfig.py", "r") as fb:
         data = fb.readlines()
         data[elementToNumber(element)]=f"{element}={value}\n"
-        with open("../pleoraConfig.py", "w") as fa:
+        with open("pleoraConfig.py", "w") as fa:
             fa.writelines(data)
 
 
 def loadConfig():
-    slotNum = src.split("Slot")[1]
+    if len(src.split("Slot")) > 1: slotNum = src.split("Slot")[1]
+    else: slotNum = "X"
     slot.configure(text=f"Slot: {slotNum}")
 
     bflist = dst.split("\\")
     bfname = bflist[len(bflist)-1]
     bfname = charControl(bfname)
     backup.configure(text=bfname)
-
-    entry_text = customtkinter.StringVar()
-    frequency.configure(textvariable=entry_text)
-    entry_text.set(float(waitTime))
 
     if notify == True:
         notification.select()
@@ -66,15 +63,6 @@ def loadConfig():
         soundfication.configure(text_color="#919191",border_color="#919191",checkmark_color="#919191")
         soundficationDir.configure(fg_color="#919191")    
 
-def entryChange(event):
-    if event.widget.get()[-1] in ["0","1","2","3","4","5","6","7","8","9",",","."]:
-        updateConfig("waitTime",float(event.widget.get().replace(",",".")))
-    else:
-        entry_text = customtkinter.StringVar()
-        frequency.configure(textvariable=entry_text)
-        entry_text.set("")
-        print(event.widget.get())
-        return
 def charControl(text):
     if len(text) >= 12:
         return text[:10]+"..."
@@ -159,14 +147,6 @@ backupLabel=customtkinter.CTkLabel(master=essentials,text="Backup folder",font=(
 backupLabel.pack(pady=(10,0))
 backup = customtkinter.CTkButton(master=essentials,command=askbackup,text="Browse",fg_color="#5FFF64",text_color="#292929",hover="#90EE90")
 backup.pack(padx=60)
-
-frequencyLabel=customtkinter.CTkLabel(master=essentials,text="Backup frequency",font=("Candra",14),text_color="white",fg_color="transparent",height=10)
-frequencyLabel.pack(pady=(15,0))
-frequencyLabelNote=customtkinter.CTkLabel(master=essentials,text="(in minutes)",font=("Candra",10),text_color="white",fg_color="transparent",height=10)
-frequencyLabelNote.pack(pady=(0,5))
-frequency = customtkinter.CTkEntry(master=essentials,placeholder_text="ex. 100",fg_color="#292929",text_color="#BFBFBF",border_color="#5FFF64")
-frequency.bind("<KeyRelease>", entryChange)
-frequency.pack(padx=20)
 
 
 additions = customtkinter.CTkFrame(master=frame,width=200,border_color="green",border_width=1)
