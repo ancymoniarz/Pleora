@@ -2,6 +2,7 @@
 
 Pleora is an backup script made for saving your Dinkum progress.  
 Pleora is not associated with James Bendon.
+![Banner](.\src\pleora-banner.png)
 
 # Requirements
 
