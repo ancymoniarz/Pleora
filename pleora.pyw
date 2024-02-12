@@ -17,7 +17,11 @@ def backup(s,d,last):
         print("--[ Backup function triggered ]--")
         log=f"\n==============================\n{textdate()}\n"
         foldername=f"{d}\\{folderdate()}"
-        os.mkdir(f"{foldername}")
+        try:
+            os.mkdir(f"{foldername}")
+        except:
+            log+="[-] ERROR: Backup failed"
+            return
         for f in files:
             try:
                 shutil.copyfile(f"{s}\\{f}", f"{foldername}\\{f}")

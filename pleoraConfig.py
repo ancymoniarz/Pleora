@@ -1,7 +1,7 @@
-src="C:\\Users\\fryderyk\\Appdata\\LocalLow\\James Bendon\\Dinkum\\Slot0"
-dst="C:\\Users\\fryderyk\\Documents\\Dinkum Backup"
+src="C:\\Choose"
+dst="C:\\Choose"
 notify=True
 notSound=True
-notificationSound="C:\\ancymon\\Pleora\\notification.wav"
+notificationSound="C:\\Choose"
 killSwitch=False
 status=False
