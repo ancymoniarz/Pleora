@@ -11,7 +11,7 @@ def folderdate():
     return now.strftime("%d-%m-%Y %H-%M-%S")
 def backup(s,d,last):
     files = os.listdir(s)
-    lastedited=os.stat(src).st_mtime
+    lastedited=os.stat(s).st_mtime
     if last == 0: return os.stat(src).st_mtime
     if last != lastedited:
         print("--[ Backup function triggered ]--")
@@ -24,10 +24,28 @@ def backup(s,d,last):
                 inf=f"[+] {f} successfully copied"
                 log+=inf+"\n"
                 print(inf) 
-            except:    
-                inf=f"[-] ERROR: {f} couldn't be copied"   
-                log+=inf+"\n"
-                print(inf) 
+            except: 
+                if os.path.isfile(f"{s}\\{f}"):
+                    inf=f"[-] ERROR: {f} couldn't be copied"   
+                    log+=inf+"\n"
+                    print(inf) 
+                else:
+                    os.mkdir(f"{foldername}\\{f}")
+                    try:
+                        for photo in os.listdir(f"{s}\\{f}"):
+                            try:
+                                shutil.copyfile(f"{s}\\{f}\\{photo}", f"{foldername}\\{f}\\{photo}")
+                                inf=f"[+] {f}\\{photo} successfully copied"
+                                log+=inf+"\n"
+                                print(inf) 
+                            except: 
+                                inf=f"[-] ERROR: {f}\\{photo} couldn't be copied"   
+                                log+=inf+"\n"
+                                print(inf) 
+                    except:
+                        inf=f"[-] ERROR: {f}\\{photo} is deleted"   
+                        log+=inf+"\n"
+                        print(inf) 
         try:
             ftext = open(f"{d}\\pleora.log", "r")
             readfile=ftext.read()
