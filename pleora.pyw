@@ -1,4 +1,4 @@
-import shutil, os, sys
+import shutil, os, sys,time
 from datetime import datetime
 from pleoraConfig import *
 from playsound import playsound
@@ -9,19 +9,20 @@ def textdate():
 def folderdate():
     now = datetime.now()
     return now.strftime("%d-%m-%Y %H-%M-%S")
-def backup(s,d,last):
+def backup(s,d,last,found):
     files = os.listdir(s)
     lastedited=os.stat(s).st_mtime
-    if last == 0: return os.stat(src).st_mtime
+    if found == True:
+        time.sleep(10)
+        return os.stat(s).st_mtime, False
+    found=False
+    if last == 0: return os.stat(src).st_mtime, found
     if last != lastedited:
+        found=True
         print("--[ Backup function triggered ]--")
-        log=f"\n==============================\n{textdate()}\n"
-        foldername=f"{d}\\{folderdate()}"
-        try:
-            os.mkdir(f"{foldername}")
-        except:
-            log+="[-] ERROR: Backup failed"
-            return
+        log=f"\n==============================\nSlot: {src.split("\\")[len(src.split("\\"))-1]}           {textdate()}\n"
+        foldername=f"{d}\\{src.split("\\")[len(src.split("\\"))-1]} - {folderdate()}"
+        os.mkdir(f"{foldername}")
         for f in files:
             try:
                 shutil.copyfile(f"{s}\\{f}", f"{foldername}\\{f}")
@@ -59,8 +60,9 @@ def backup(s,d,last):
         ftext.write(f"{readfile}\n{log}")
         ftext.close()
         notification()
-        return lastedited
-    else: return last
+        
+        return lastedited, found
+    else: return last, found
 def notification():
     if notify!=True:
         playsound(notificationSound)
@@ -70,7 +72,8 @@ if "C:\\ancymon" in os.path.abspath(sys.argv[0]):
 else:
     quit()
 editTime=0
+found=False
 while killSwitch == False:
-    editTime=backup(src,dst,editTime)
+    editTime, found=backup(src,dst,editTime,found)
     
     

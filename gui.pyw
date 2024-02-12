@@ -132,7 +132,7 @@ frame.pack(pady=20,padx=20,fill="both",expand=True)
 
 label=customtkinter.CTkLabel(master=frame,text="Pleora Config",font=("Candra",30),text_color="white")
 label.pack(pady=(10,0))
-label=customtkinter.CTkLabel(master=frame,text="Pleora v1.0 - ancymon",font=("Candra",15),text_color="white")
+label=customtkinter.CTkLabel(master=frame,text=f"Pleora v{version} - ancymon",font=("Candra",15),text_color="white")
 label.pack(pady=(0,10))
 
 essentials = customtkinter.CTkFrame(master=frame,width=400,border_color="green",border_width=1)

@@ -5,4 +5,3 @@ notSound=True
 notificationSound="C:\\ancymon\\Pleora\\notification.wav"
 killSwitch=False
 status=False
-version=1.2
