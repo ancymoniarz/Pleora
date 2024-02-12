@@ -1,7 +1,7 @@
 import customtkinter, os
 from pleoraConfig import *
 from customtkinter import filedialog 
-if "C:\\Pleora" in os.getcwd(): 
+if "C:\\ancymon" in os.getcwd(): 
     print("Loading Pleora Config, please wait...")
 else:
     quit()
